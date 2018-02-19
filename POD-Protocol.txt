@@ -1,0 +1,41 @@
+#Resumo
+O IFPB-POD-Protocol é um protocolo de exemplo a ser utilizado na disciplina de POD ou SD.
+
+#1. Objetivo
+Permitir a comunicação entre aplicações enviando e recebendo dados de texto ou binário com tamanho limitado,
+no máximo 1024 bytes.
+
+#2. Regras de Envio
+O envio deve ser realizado através de uma requisição ou resposta direta do cliente para o servidor ou do servidor
+para o cliente, respectivamente. A mensagem de envio corresponderá ao frame e que será único como requisição ou resposta.
+O frame deverá ter como chave de encerramento uma sequência de 3 bytes iguais a zero.
+
+Exemplo: <frame>0x00,0x00,0x00
+
+#3. Regras de Recebimento
+O recebimento deverá ser realizado através de uma leitura direta dos dados encaminhados pelo cliente através
+de uma requisição ou do servidor através de uma resposta.
+O frame deverá ter como chave de encerramento uma sequência de 3 bytes iguais a zero.
+
+Exemplo: <frame os bytes array><0x00,0x00,0x00>
+
+#4. Frame
+
+  0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 ...
+  ------------------------------------------
+  T B ------- L -------- -------- P --------
+
+ *T (1bit) -> corresponde ao tipo de frame, sendo igual:
+              0 quando é um frame de requisição e igual a 1 quandor for resposta.
+ *B (1bit) -> corresponde ao tipo de dado contido no payload, sendo:
+              0 para binário e 1 para texto (ASCII Text).
+ *L (10bits) -> corresponderá ao tamanho do conteúdo, sendo no máximo 1024bytes, ou seja,
+                um frame deverá ocupar pelo menos 1 byte de conteúdo.
+ *P (max 1024bytes) -> corresponde ao payload que pode ser binário ou texto.
+
+#5. Tarefa
+ -Implementar o protocolo de forma que possa ser utilizado em outras aplicações.
+ -A implementação deve gerar pelo menos dois métodos ou objetos que realizem as seguintes operações:
+   a) serializar um objeto java para frame de requisição ou resposta;
+   b) deserializar um frame (de requisição ou resposta) para um objeto java.
+ -
